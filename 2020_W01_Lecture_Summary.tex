@@ -1,0 +1,268 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 1}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Taylor Series
+	\item Finite Differences
+	\item Newton's Method
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 1 \textbf{not} submitted/assessed this week
+	\item Quiz 1 (Week 3)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Taylor Series}
+
+Taylor series expansions are used to represent any analytic function, $f(x)$, as a power series about a fixed point $a$,
+
+\vspace{2mm}
+
+$$f(x) = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + ... + \frac{f^{(n)}(a)}{n!}(x-a)^n + f^{(n+1)}(\zeta)\frac{(x-a)^{n+1}}{(n+1)!},$$
+
+\vspace{4mm}
+
+where the last term is called the remainder, and $a<\zeta<x$. This makes the Taylor series exact.
+
+\vspace{6mm}
+
+It can also be written with higher order terms grouped:
+
+\vspace{6mm}
+
+$$f(x) = f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + H.O.T.$$  
+
+\vspace{6mm}
+
+In this course, Taylor series are especially useful for:
+\begin{enumerate}
+\item obtaining simplified approximations to analytic functions near a point;
+\item obtaining finite difference approximations; and
+\item studying the error of finite difference approximations.
+\end{enumerate} 
+
+\subsection{Multidimensional Taylor Series}
+
+For a two-dimensional function $f(x,y)$, the Taylor series about the point $(a,b)$ is:
+
+\begin{multline*}
+f(x,y) = f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b) + \\ \frac{1}{2}\left[f_{xx}(a,b)(x-a)^2 + 2f_{xy}(a,b)(x-a)(y-b) + f_{yy}(a,b)(y-b)^2\right] + H.O.T $$
+\end{multline*}
+
+\vspace{4mm}
+
+Recall $f_x$ and $f_{xx}$ are shorthand notation for the first and second derivatives, respectively.
+
+%This can be generalised to 
+
+\pagebreak
+
+\section{Finite Differences}
+
+Finite difference approximations are used to approximate derivatives of complex functions to which no analytical solution exists.
+
+\vspace{4mm}
+
+The 2nd part of the course exclusively applies these approximations to solve PDEs.
+
+\subsection{First derivatives}
+
+An approximation to the first derivative at a point $x$ can be obtained by considering a finite step $h$. This step can be taken above, below, or to both sides of $x$ to calculate the gradient, yielding the following common finite difference formulas.
+
+\vspace{4mm}
+
+Forward difference (1st order accurate):
+
+\vspace{4mm}
+
+$$u'(x) \approx \frac{u(x+h) - u(x)}{h}$$
+
+\vspace{4mm}
+
+Backward difference (1st order accurate):
+
+\vspace{4mm}
+
+$$u'(x) \approx \frac{u(x) - u(x-h)}{h}$$
+
+\vspace{4mm}
+
+Central difference (2nd order accurate):
+
+\vspace{4mm}
+
+$$u'(x) \approx \frac{u(x+h) - u(x-h)}{2h}$$
+
+\vspace{4mm}
+
+Other approximations can be obtained using the method of undetermined coefficients.
+
+\subsection{Second derivatives}
+
+The common second derivative central difference approximation (2nd order accurate) can be obtained using finite difference approximations of the first derivative.
+
+\vspace{4mm}
+
+$$u''(x) \approx \frac{u(x+h) - 2u(x) + u(x-h)}{h^2}$$
+
+\vspace{4mm}
+
+Taylor series can also be used to obtain the central difference approximation as well as higher order approximations, by taking an expansion of a function's value at $(x+h)$, $(x-h)$, $(x+2h)$, $(x+2h)$, and so on, about a point $x$, and performing algebraic manipulation of the resulting series. 
+
+
+\pagebreak
+
+\section{Newton's Method}
+
+Newton's method is an iterative approach to solving systems of non-linear functions.
+
+\subsection{Single-variable}
+
+Consider a single-variable function, which we want to find the roots of:
+
+\vspace{2mm}
+
+$$f(x)=0$$
+
+\vspace{2mm}
+
+Taking a linear Taylor series approximation (where $x^{(0)}$ is our first guess):
+
+\vspace{2mm}
+
+$$f(x^{(0)} + h) \approx f(x^{(0)}) + f'(x^{(0)})h$$
+
+\vspace{4mm}
+
+Letting the next approximate solution $x^{(1)}=x^{(0)}+h$ be a root, i.e., $f(x^{(0)}+h)=0$, we obtain:
+
+\vspace{2mm}
+
+\begin{align*}
+f'(x^{(0)})h &= -f(x^{(0)}) \\
+\\
+h &= -\frac{f(x^{(0)})}{f'(x^{(0)})}
+\end{align*}
+
+\vspace{4mm}
+
+Therefore, our updated approximate solution is:
+
+\vspace{2mm}
+
+$$x^{(1)} = x^{(0)} + h = x^{(0)} - \frac{f(x^{(0)})}{f'(x^{(0)})}$$
+
+\vspace{4mm}
+
+Repeat iteration of the above update rule until $f(x^{(n)}) \approx 0$.
+
+\subsection{Multi-variable}
+
+For sets of equations with multiple variables $\mathbf{x}=(x_1, x_2, x_3, ...)$,
+
+\vspace{2mm}
+
+$$\boldsymbol{f}(\boldsymbol{x}) = 0$$
+
+$$\boldsymbol{f}'(\boldsymbol{x}) = \nabla \boldsymbol{f}'(\boldsymbol{x}) = J$$
+
+\vspace{4mm}
+
+where,
+
+\[
+\mathbf{f}(\mathbf{x}) =
+\begin{bmatrix}
+f_1(\mathbf{x}) \\[1ex]
+f_2(\mathbf{x}) \\[1ex]
+\vdots \\
+f_m(\mathbf{x})
+\end{bmatrix}
+\]
+
+and $J$ is the Jacobian:
+
+\[
+J =
+\begin{bmatrix}
+  \frac{\partial f_1}{\partial x_1} & 
+    \frac{\partial f_1}{\partial x_2} & 
+    \dots \\[1ex] % <-- 1ex more space between rows of matrix
+  \frac{\partial f_2}{\partial x_1} & 
+    \ddots & 
+    \vdots \\[1ex]
+  \vdots & 
+    \dots & 
+    \frac{\partial f_m}{\partial x_m}
+\end{bmatrix}
+\]
+
+\vspace{4mm}
+
+We then obtain the formula:
+
+\vspace{2mm}
+
+$$\mathbf{f}(\mathbf{x}^{(n)} + \mathbf{h}) \approx \mathbf{f}(\mathbf{x}^{(n)}) + J\mathbf{h}$$
+
+\vspace{4mm}
+
+from which the general update rule is:
+
+\vspace{2mm}
+
+$$ \mathbf{x}^{(n+1)} = \mathbf{x}^{(n)} - J^{-1} \mathbf{f}(\mathbf{x}^{(n)}) $$
+
+\end{document}

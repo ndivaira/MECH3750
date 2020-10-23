@@ -1,0 +1,239 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 2}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Least Squares
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 2 (due before Week 3 PBL session)
+	\item Quiz 1 (Week 3 PBL session)
+	\begin{itemize}
+		\item[--] Taylor series
+		\item[--] Finite differences
+		\item[--] Newton's method
+		\item[--] Least squares
+	\end{itemize}
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Least Squares Approximation}
+
+\vspace{4mm}
+
+The least squares method can be used to approximate a vector $\mathbf{f}$ with $n$ vectors $\mathbf{p^{(1)}}, \mathbf{p^{(2)}}, ... , \mathbf{p^{(n)}}$,
+
+\vspace{2mm}
+
+$$\mathbf{f} \approx \alpha_1 \mathbf{p^{(1)}} + \alpha_2 \mathbf{p^{(2)}} + ... + \alpha_n \mathbf{p^{(n)}}.$$
+
+\vspace{5mm}
+
+We can optimise the approximation by first defining a positive error,
+
+\vspace{4mm}
+
+$$ E = \sum_i \left(\alpha_1 p_i^{(1)} + \alpha_2 p_i^{(2)} + ... + \alpha_n p_i^{(n)} - f_i \right)^2,$$
+
+\vspace{5mm}
+
+for each component of the vector, $i$.
+
+\vspace{5mm}
+
+The error is minimised by taking its derivatives w.r.t. all coefficients $\alpha_j$ $\left( \forall j \in 1,2, ..., n \right)$,
+
+\vspace{4mm}
+
+$$ \frac{\partial E}{\partial \alpha_j} = \sum_i 2 p_i^{(j)} \left(\alpha_1 p_i^{(1)} + \alpha_2 p_i^{(2)} + ... + \alpha_n p_i^{(n)} - f_i \right),$$
+
+\vspace{5mm}
+
+and setting to 0,
+
+\vspace{4mm}
+
+$$ 0 = \sum_i p_i^{(j)} \left(\alpha_1 p_i^{(1)} + \alpha_2 p_i^{(2)} + ... + \alpha_n p_i^{(n)} \right) - \sum_i p_i^{(j)} f_i. $$
+
+\vspace{5mm}
+
+This can be written in matrix notation using the dot product $ \mathbf{f} \cdot \mathbf{g} = \sum_i f_i g_i $, 
+
+\vspace{4mm}
+
+\begin{align*}
+\begin{bmatrix}
+	\mathbf{p^{(1)}} \cdot \mathbf{f} \\[1ex]
+	\mathbf{p^{(2)}} \cdot \mathbf{f} \\[1ex]
+	\vdots \\[1ex]
+	\mathbf{p^{(n)}} \cdot \mathbf{f} \\[1ex]
+\end{bmatrix} 
+&=
+\begin{bmatrix}
+  	\mathbf{p^{(1)}} \cdot \mathbf{p^{(1)}} & \mathbf{p^{(1)}} \cdot \mathbf{p^{(2)}} & \dots & \mathbf{p^{(1)}} \cdot \mathbf{p^{(n)}} \\[1ex]
+    \mathbf{p^{(2)}} \cdot \mathbf{p^{(1)}} & \ddots & \ddots & \vdots \\[1ex]
+    \vdots & \ddots & \ddots & \vdots \\[1ex]
+    \mathbf{p^{(n)}} \cdot \mathbf{p^{(1)}} & \dots & \dots & \mathbf{p^{(n)}} \cdot \mathbf{p^{(n)}} \\
+\end{bmatrix}
+\begin{bmatrix}
+	\alpha_1 \\[1ex]
+	\alpha_2 \\[1ex]
+	\vdots \\[1ex]
+	\alpha_n \\[1ex]
+\end{bmatrix} 
+ \\[2ex]
+\boldsymbol{\alpha} &= (P^TP)^{-1}P^T\mathbf{f}
+\end{align*}
+
+\vspace{5mm}
+
+and solved for $\boldsymbol{\alpha}$.
+
+\newpage
+
+\subsection{Regression}
+
+\vspace{4mm}
+
+Least squares approximation can also be used to fit discrete data points with a continuous function.
+
+\vspace{5mm}
+
+For example, to fit $n$ data points $(x_i,y_i)$ with a quadratic function $f(x)=\alpha_1 x^2 + \alpha_2 x + \alpha_3$, the coefficients $\alpha_1, \alpha_2, \alpha_3$ can be found by minimising the error,
+
+\vspace{4mm}
+
+$$ E(\alpha_1, \alpha_2, \alpha_3) = \sum_{i=1}^n \left(\alpha_1 x_i^2 + \alpha_2 x_i + \alpha_3 - y_i\right)^2.  $$
+
+\vspace{5mm}
+
+We do this by re-writing in vector notation, 
+
+\vspace{4mm}
+
+$$ E(\alpha_1, \alpha_2, \alpha_3) = \sum_{i=1}^n \left(\alpha_3 p_i^{(0)} + \alpha_2 p_i^{(1)} + \alpha_1 p_i^{(2)} - y_i\right)^2, $$
+
+\vspace{5mm}
+
+where, 
+
+\begin{align*}
+\boldsymbol{p^{(0)}} &= (1, 1, ..., 1),\\
+\boldsymbol{p^{(1)}} &= (x_1, x_2, ..., x_n),\\ 
+\boldsymbol{p^{(2)}} &= (x_1^2, x_2^2, ..., x_n^2),\\
+\end{align*}
+
+and solving $\frac{\partial E}{\partial \alpha_j} = 0$ for $\boldsymbol{\alpha}$, i.e., solving the matrix equations $\boldsymbol{\alpha} = (P^TP)^{-1}P^T\mathbf{f}$ as above, such that,
+
+\vspace{4mm}
+
+\[
+P =
+\begin{bmatrix}
+  	1 & x_1 & x_1^2 \\
+    1 & x_2 & x_2^2 \\
+    \vdots & \vdots & \vdots \\
+    1 & x_n & x_n^2 \\
+\end{bmatrix}.
+\]
+
+\newpage
+
+\subsection{Fitting Functions}
+
+\vspace{4mm}
+
+What if we want to approximate a continuous function (e.g. cubic) with another function (e.g. linear) over an interval $[a,b]$?
+
+\vspace{5mm}
+
+For an approximating polynomial of degree $N$, we can define the error,
+
+\vspace{4mm}
+
+$$ E = \int_{a}^{b} \left(\sum_{j=1}^N \alpha_j p_j (x) - f(x)\right)^2 dx, $$
+
+\vspace{5mm}
+
+where $p_1(x)=1, p_2(x) = x, ..., p_N(x)=x^{N-1}$.
+
+\vspace{5mm}
+
+Again, we solve $\frac{\partial E}{\partial \alpha_j} = 0$ for $\boldsymbol{\alpha}$,
+
+\vspace{4mm}
+
+\[
+\begin{bmatrix}
+	\int_{a}^{b} p_1 f dx \\[2ex]
+	\int_{a}^{b} p_2 f dx \\[2ex]
+	\vdots \\[2ex]
+	\int_{a}^{b} p_N f dx \\[2ex]
+\end{bmatrix} 
+=
+\begin{bmatrix}
+  	\int_{a}^{b} p_1 p_1 dx & \int_{a}^{b} p_1 p_2 dx & \dots & \int_{a}^{b} p_1 p_N dx \\[2ex]
+    \int_{a}^{b} p_2 p_1 dx & \ddots & \ddots & \vdots \\[2ex]
+    \vdots & \ddots & \ddots & \vdots \\[2ex]
+    \int_{a}^{b} p_N p_1 dx & \dots & \dots & \int_{a}^{b} p_N p_N dx \\[2ex]
+\end{bmatrix}
+\begin{bmatrix}
+	\alpha_1 \\[2ex]
+	\alpha_2 \\[2ex]
+	\vdots \\[2ex]
+	\alpha_N \\[2ex]
+\end{bmatrix} .
+\]
+
+\end{document}

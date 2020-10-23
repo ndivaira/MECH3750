@@ -1,0 +1,216 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 4}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	%\item Even \& odd functions
+	\item Fourier Series
+	\item Complex Properties
+	\item Discrete Fourier Transforms
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 4 (due before Week 5 PBL session)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Jakob Ivanhoe}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+%\section{Even \& Odd Functions}
+
+\section{Fourier Series}
+
+\vspace{4mm}
+
+A Fourier Series provides a way of approximating any periodic function, i.e., a function which repeats itself infinitely over an interval. 
+
+\vspace{4mm}
+
+It uses the special fact that $sin(x)$ and $cos(x)$ are mutually orthogonal on the interval $[-\pi,\pi]$, and represents the periodic function using an infinite series of these trigonometric functions,
+
+\vspace{2mm}  
+
+$$ f(x) = \frac{a_0}{2} + \sum_{n=1}^\infty a_n cos(nx) + b_n sin(nx). $$
+
+\vspace{4mm}
+
+The general method to find the Fourier Series is to first obtain expressions for the coefficients $a_n$ and $b_n$,
+
+\begin{align*}
+a_n &= \frac{1}{\pi} \int_{-\pi}^{\pi} f(x)cos(nx) dx \\[1em]
+b_n &= \frac{1}{\pi} \int_{-\pi}^{\pi} f(x)sin(nx) dx \\[1em]
+\end{align*}
+
+followed by substitution into the Fourier Series expression up to the desired number of terms.
+
+\vspace{4mm}
+
+An example for finding the Fourier Series of $f(x) = x$ on $[-\pi,\pi]$ is given in the lecture notes.
+
+\newpage
+
+\section{Complex Properties}
+
+\subsection{Complex Exponentials}
+
+\vspace{4mm}
+
+Recall that,
+
+\vspace{2mm}
+
+$$ e^{ix} = cos(x) + isin(x).$$
+
+\vspace{4mm}
+
+\textit{Question 1} requires use of this identity for a number of proofs.
+
+\subsection{Complex Inner Product}
+
+\vspace{4mm}
+
+The inner product for complex vectors is defined slightly differently compared to real vectors.
+
+\vspace{4mm}
+
+For two vectors $\mathbf{p}$ and $\mathbf{q}$ which may contain complex numbers in any of their entries, we take the \textit{conjugate} of the first vector to define the inner product,
+
+\vspace{2mm}
+
+$$ \langle \mathbf{p},\mathbf{q} \rangle = \overline{\mathbf{p}} \cdot \mathbf{q} $$
+
+\vspace{4mm}
+
+Recall that the conjugate of a vector simply changes the sign of all imaginary terms, such that for a vector with two entries,
+
+\vspace{2mm}
+
+\begin{align*}
+\mathbf{p} &= (p_1,p_2) = (a + bi, c + di),\\[1em]
+\overline{\mathbf{p}} &= (\overline{p_1},\overline{p_2}) = (a - bi, c - di).
+\end{align*}
+
+\vspace{4mm}
+
+\textit{Norms} and \textit{distances} are still calculated the same way, but with the conjugate of the first vector.
+
+\newpage
+
+\section{Discrete Fourier Transforms}
+
+\vspace{4mm}
+
+The discrete Fourier transform (DFT) is a numerical analysis tool used to fit a Fourier series to a discrete set of data, rather than a continuous function.
+
+\vspace{4mm}
+
+Similar to the approximations we've been doing thus far, we can approximate a vector of complex or real data,
+
+\vspace{2mm}
+
+$$ \mathbf{f} = (f_0,f_1,...,f_{N-1}), $$
+
+\vspace{4mm}
+
+using a basis set,
+
+\vspace{2mm}
+
+$$ \mathbf{p}_n^{(k)} = \frac{1}{N} exp\left(\frac{ik2\pi n}{N}\right),$$
+
+\vspace{2mm}
+
+%using a basis set,
+%
+%\vspace{2mm}
+%
+%$$ \mathbf{p}_n^{(k)} = \frac{e^{ikx_n}}{N},$$
+%
+%\vspace{2mm}
+%
+%\begin{center}
+% \hspace{2mm} where $x_n = \frac{2\pi n}{N}$, \hspace{1mm} $n=0,1,...,N-1$, \hspace{1mm} $k=0,1,...,N-1 $
+%\end{center}
+%
+%\vspace{4mm}
+
+such that
+
+\vspace{2mm}
+
+$$ \mathbf{y} = a_0 \mathbf{p}^{(0)} + a_1 \mathbf{p}^{(1)} + ... + a_{N-1} \mathbf{p}^{(N-1)}.$$
+
+\vspace{4mm}
+
+This can be thought of as breaking $\mathbf{f}$ down into a summation of different frequencies of index $k$ with weightings $a_k$.
+
+\vspace{4mm}
+
+To find the coefficients $a_k$, we apply least squares such that $\|\mathbf{y}-\mathbf{f}\|^2$ is minimised. This gives a normal set of equations (as seen in the least squares method), and seeing as we have an orthogonal basis set, all off diagonal terms of our design matrix are 0.
+
+\vspace{4mm}
+
+Solving the normal equations, we obtain,
+
+\vspace{2mm}
+
+%$$ a_k = \sum_{n=0}^{N-1} e^{-ikx_n}f_n. $$
+$$ a_k = \sum_{n=0}^{N-1} exp\left( -\frac{ik2\pi n}{N} \right)f_n. $$
+
+\vspace{4mm}
+
+Note that, since we have used $N$ vectors to fit $N$ data points, we've achieved an exact representation of our vector $\mathbf{f}$. We can also consider the \textit{inverse} DFT, where $\mathbf{f}$ is recovered from the known $a_n$,
+
+\vspace{2mm}
+
+$$ f_n = \frac{1}{N} \sum_{k=0}^{N-1} a_k exp\left(\frac{ik2\pi n}{N} \right). $$
+
+\end{document}

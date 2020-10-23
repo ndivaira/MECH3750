@@ -1,0 +1,185 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 6}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Separation of Variables (Fourier's Method)
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 6 (due before Week 7 PBL session)
+	\item Assignment 1 (Due Fri. Week 7)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, William Snell, Tristan Samson, Nicholas Maurer, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+
+\section{Separation of Variables (Fourier's Method)}
+
+The method of separation of variables assumes a PDE is \textit{separable}, i.e., it can be written in the form, 
+
+$$u(x,t) = F(x)g(t).$$
+
+\subsection{Wave Equation}
+
+Suppose we have a system (e.g. string occupying $0 \leq x \leq L$) which is described by the wave equation,
+
+\begin{align*}
+\frac{\partial^2u}{\partial t^2} &= c^2 \frac{\partial^2u}{\partial x^2}  \\[0.5em]
+u_{tt} &= c^2u_{xx}
+\end{align*}
+
+with initial conditions,
+
+\begin{align*}
+u(x,0) &= f(x), \\[0.5em]
+u_t(x,0) &= g(x),
+\end{align*}
+
+and boundary conditions,
+
+\begin{align*}
+u(0,t) &= 0, \\[0.5em]
+u(L,t) &= 0.
+\end{align*}
+
+\vspace{2mm}
+
+To solve the PDE, firstly substitute the separated equation, $u(x,t) = F(x)g(t)$, into the boundary conditions,
+
+\begin{align*}
+u(0,t)=0=F(0)g(t), \\[0.7em]
+u(L,t)=0=F(L)g(t), 
+\end{align*}
+
+\vspace{4mm}
+
+to obtain the useful results $F(0)=0$ and $F(L)=0$.
+
+\vspace{4mm}
+
+Next, substitute the separated equation into the original PDE,
+
+\begin{align*}
+u_{tt} &= c^2u_{xx},  \\[0.8em]
+F(x)g''(t) &= c^2F''(x)g(t),
+\end{align*}
+
+\vspace{2mm}
+
+to obtain the result,
+
+$$ \frac{g''(t)}{g(t)c^2} = \frac{F''(t)}{F(t)} = k. $$
+
+\vspace{4mm}
+
+In the lectures, it was shown that the solution to this equation is,
+
+\vspace{2mm}
+
+\begin{center}
+\begin{tabular}{p{70mm}p{40mm}}
+$F(x) = ax+b$ 	& for $k=0$, \\[1em]
+$F(x) = a\hspace{0.2em}cosh(\mu x) + b\hspace{0.2em}sinh(\mu x)$ 	& for $k=\mu^2$, \\[1em]
+$F(x) = a\hspace{0.2em}cos(p x) + b\hspace{0.2em}sin(p x)$ 	& for $k=-p^2$. \\[1em]
+\end{tabular}
+\end{center}
+
+These results provide the starting point for PBL \textit{Question 1}. 
+
+\vspace{4mm}
+
+By applying the boundary conditions, it was shown that the case $k=-p^2$ provides the only useful solution, $p=n\pi/L$, such that
+
+\vspace{2mm}
+
+$$ F(x) = b\hspace{0.2em}sin\left(\frac{n\pi}{L}x\right), $$
+
+and,
+
+$$ g(t) = a\hspace{0.2em}cos\left(\frac{n\pi}{L}ct\right) + b\hspace{0.2em}sin\left(\frac{n\pi}{L}ct\right), $$
+
+\vspace{4mm}
+
+where $c=x/t$. Substituting these results into the separated equation, $u(x,t) = F(x)g(t)$, we obtain,
+
+\vspace{2mm}
+
+$$u(x,t) = \left[A_n\hspace{0.2em}cos\left(\frac{n\pi}{L}ct\right) + B_n\hspace{0.2em}sin\left(\frac{n\pi}{L}ct\right)\right]\hspace{0.2em}sin\left(\frac{n\pi}{L}x\right). $$
+
+\vspace{4mm}
+
+Seeing as any value of $n$ gives a solution to the original PDE, and any linear combination of the equations for any $n$ is also a solution, the general solution is,
+
+\vspace{2mm}
+
+$$u(x,t) = \sum_{n=1}^{\infty}\left[A_n\hspace{0.2em}cos\left(\frac{n\pi}{L}ct\right) + B_n\hspace{0.2em}sin\left(\frac{n\pi}{L}ct\right)\right]\hspace{0.2em}sin\left(\frac{n\pi}{L}x\right). $$
+
+\vspace{4mm}
+
+Like our previous work with Fourier series, the summation can now be thought of as breaking the solution to the PDE into a combination of trigonometric functions of different frequencies.
+
+\vspace{4mm}
+
+Imposing the initial conditions ($f(x)=u(x,0)$ and $g(x)=u_t(x,0)$)  expressions for the coefficients were found in lectures,
+
+\vspace{2mm}
+
+$$ A_n = \frac{2}{L} \int_0^L sin\left(\frac{n\pi x}{L}\right) f(x) dx,  $$
+\vspace{2mm}
+$$ B_n = \frac{2}{n\pi c} \int_0^L sin\left(\frac{n\pi x}{L}\right) g(x) dx.  $$
+
+\vspace{4mm}
+
+Separation of variables may also be applied to the 1D heat equation and steady state heat conduction in 2D, as derived in lectures.
+
+\end{document}

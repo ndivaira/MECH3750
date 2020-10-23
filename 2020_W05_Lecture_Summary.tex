@@ -1,0 +1,165 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 5}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Introduction to Partial Differential Equations
+	\item Initial Conditions \& Boundary Conditions 
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 5 (due before Week 6 PBL session)
+	\item Quiz 2 (Week 6)
+	\item Assignment 1 (Due Fri Week 7)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+
+\section{Introduction to Partial Differential Equations (PDEs)}
+
+\vspace{4mm}
+
+In lectures we were introduced to the three core PDEs.
+
+\vspace{4mm}
+
+\hspace{8mm} Wave equation:
+
+\begin{align*}
+\frac{\partial^2u}{\partial t^2} &= c^2 \frac{\partial^2u}{\partial x^2}  \\[0.8em]
+u_{tt} &= c^2u_{xx}
+\end{align*}
+
+\hspace{8mm} Heat (diffusion) equation:
+
+\begin{align*}
+\frac{\partial u}{\partial t} &= k \frac{\partial^2u}{\partial x^2}  \\[0.8em]
+u_{t} &= k^2u_{xx}
+\end{align*}
+
+\hspace{8mm} Laplace's equation:
+
+\begin{align*}
+\frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} &= 0  \\[0.8em]
+u_{xx} + u_{yy} &= 0
+\end{align*}
+
+\vspace{4mm}
+
+$u$ may represent any quantity, such as a displacement (wave equation), a concentration or a temperature (heat/diffusion equation).
+
+\vspace{4mm}
+
+These PDEs are written here in their lowest dimensional forms, but may be extended to higher spatial dimensions ($y,z$), in which case the Laplace operator is commonly used,
+
+\vspace{2mm}
+
+$$ \bigtriangledown^2 = \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2} + \frac{\partial^2u}{\partial z^2}. $$
+
+\newpage
+
+\subsection{Initial Conditions}
+
+In order to solve a PDE as we progress forward through time, we need to know what it originally looked like, i.e., at $t=0$.
+
+\vspace{4mm}
+
+For the wave equation, we must know the original position and velocity,
+
+\vspace{2mm}
+
+$$ u(x,0), \\[1em]$$
+$$ \frac{\partial u}{\partial t}(x,0). $$
+
+\vspace{4mm}
+
+For the heat equation, only initial concentration is required,
+
+\vspace{2mm}
+
+$$ u(x,0) = f(x). $$
+
+\vspace{4mm}
+
+Sometimes we may be required to solve for initial conditions given the solution to $u(x,t)$ (PBL \textit{Question 3}).
+
+\subsection{Boundary Conditions}
+
+Like initial conditions, we must also know what the boundaries limiting the motion of our system are in order to solve a PDE.
+
+\vspace{4mm}
+
+For the wave equation, we typically know (or solve) the value of $u$ at the beginning and end of the spatial interval $[0,L]$ (PBL \textit{Question 3}),
+
+\vspace{2mm}
+
+$$ u(0,t), $$
+$$ u(L,t). $$
+
+\vspace{4mm}
+
+These are an example of fixed, or \textit{Dirichlet}, boundary conditions. The other common boundary condition is the \textit{Neumann} boundary condition, 
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial x}(L,x) = f(x), $$
+
+\vspace{4mm}
+
+which effectively specifies a flow, or flux, over a boundary. This is common to diffusion problems. We'll come back to \textit{Dirichlet} and \textit{Neumann} boundary conditions as we progress through solving PDEs throughout the rest of the course.
+
+\vspace{4mm}
+
+Note that for ODEs where time is the only variable, $y(t)$, a boundary value problem requires solving $y(t_1)$ and $y(t_2)$ (PBL \textit{Questions 1 \& 2}).
+
+\end{document}

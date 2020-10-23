@@ -1,0 +1,153 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 10}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Advanced solution techniques for convection
+	\begin{itemize}
+		\item[--] Higher-order schemes
+		\item[--] Non-linear convection
+	\end{itemize}
+	\item Boundary value problems
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 10 (due before Week 11 PBL session)
+	\item Assignment II (Due Fri. Week 11)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Advanced solution techniques for convection}
+ 
+\subsection{Higher-order schemes}
+
+Modified finite difference schemes are required to universally achieve second order spatial and temporal convergence, $O((\Delta x)^2)$ and $O((\Delta t)^2)$, for convection problems, while maintaining stability. The Lax-Wendroff scheme uses a second order Taylor series as its basis,
+
+\begin{align*}
+u_j^{m+1} &= u_j^m + \Delta t \frac{\partial u_j^m}{\partial t} + \frac{(\Delta t)^2}{2}\frac{\partial^2 u_j^m}{\partial t^2} + H.O.T.\\[1em]
+		  &\approx u_j^m - v\Delta t \frac{\partial u_j^m}{\partial x} + v^2\frac{(\Delta t)^2}{2}\frac{\partial^2 u_j^m}{\partial x^2}\\[1em]
+		  &\approx u_j^m - v\Delta t \frac{u_{j+1}^m - u_{j-1}^m}{2\Delta x} + v^2\frac{(\Delta t)^2}{2}\frac{u_{j+1}^m - 2u_j^m + u_{j-1}^m}{(\Delta x)^2},\\[1em]
+\end{align*}
+
+\vspace{-5mm}
+
+where, rearranging and substituting $\sigma = v \Delta t \Delta x$, we obtain the update equation,
+
+\vspace{2mm}
+
+$$ u_j^{m+1} \approx \frac{\sigma}{2}(1+\sigma)u_{j-1}^m + (1-\sigma^2)u_j^m - \frac{\sigma}{2}(1-\sigma)u_{j+1}^m. $$
+
+\vspace{4mm}
+
+The MacCormack Method, which is based on an explicit predictor-correct finite difference scheme, presents a more general method for solving hyperbolic systems, both linear and non-linear.
+
+
+
+\subsection{Non-linear convection}
+
+Non-linear convection arises in the inviscid euler equations, which are described by the inviscid Burgers Equation,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} = 0, $$
+
+\vspace{4mm}
+
+where the convective velocity is now dependent on the convected quantity, $u$. These can be written in its non-conservative (above) and conservative form,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + \frac{1}{2} \frac{\partial u^2}{\partial x} = 0. $$
+
+\vspace{4mm}
+
+This conservative form is useful when shocks in solution can form, at which point PDEs are no longer applicable.
+
+
+\section{Boundary value problems}
+
+The most simple boundary value problems (BVP) are based on one-dimensional, linear ODEs,
+
+\vspace{2mm}
+
+$$ \frac{d^2u}{dx^2} + a\frac{du}{dx} + bu = 0.$$
+
+\vspace{4mm}
+
+To solve the BVP, we need the values of $u$ at each end of our solution domain $[0,L]$,
+
+\vspace{2mm}
+
+$$ u(0)=U_0, $$\\[-4ex]
+$$ u(L)=U_L.$$ 
+
+\vspace{4mm}
+
+These types of BVPs are typically for steady-state problems, such as trajectories or temperature distributions (today's PBL sheet),
+
+\vspace{2mm}
+
+$$ \frac{d^2T}{dx^2} + q(T) = 0.$$
+
+\vspace{4mm}
+
+Note that this is the 1D Laplace (elliptical) equation, and that adding a temporal term would result in a diffusion equation,
+
+$$  \frac{\partial T}{\partial t} + \frac{d^2T}{dx^2} + q(T) = 0.$$
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,174 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 3}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Inner Products, Norms, Distances and Orthogonality
+	\item Least Squares using Inner Products
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 3 (due before Week 4 PBL session)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Inner Products}
+
+\vspace{4mm}
+
+The inner product, $ \langle p,q \rangle $, is an operation between two quantities (e.g., functions or vectors) which produces a scalar quantity.
+
+\vspace{4mm}
+
+It can be thought of as a generalisation of the dot product for vectors,
+
+\vspace{2mm}
+
+$$ \langle \mathbf{p},\mathbf{q} \rangle = \mathbf{p} \cdot \mathbf{q}, $$
+
+\vspace{4mm}
+
+and can be defined for functions as,
+
+\vspace{2mm}
+
+$$ \langle p,q \rangle = \int_a^b p(x)q(x) dx. $$
+
+\vspace{4mm}
+
+\subsection{Norms, Distances and Orthogonality}
+
+\vspace{4mm}
+
+These are important properties of the inner product.
+
+\vspace{6mm}
+
+{\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{p{40mm}p{15mm}p{50mm}}
+%\begin{tabular}{l l l l}
+Norm (magnitude) & $\Rightarrow$	& $\|\mathbf{p}\| = \sqrt{\langle \mathbf{p},\mathbf{p} \rangle}$ \\[1em]
+Distance & $\Rightarrow$			& $\|\mathbf{p}-\mathbf{q}\| = \sqrt{\langle \mathbf{p}-\mathbf{q},\mathbf{p}-\mathbf{q} \rangle}$ \\[1em]
+Orthogonality & $\Rightarrow$	& $\langle \mathbf{p},\mathbf{q} \rangle = 0$ \\[1em]
+\end{tabular}
+
+\vspace{4mm}
+
+For the inner product for functions shown above, these properties become,
+
+\vspace{6mm}
+
+\begin{tabular}{p{40mm}p{15mm}p{70mm}}
+Norm & $\Rightarrow$			& $\|p\| = \sqrt{\int_a^b p(x)^2 dx}$ \\[1em]
+Distance & $\Rightarrow$		& $\|p-q\| = \sqrt{\int_a^b \left( p(x) - q(x) \right)^2 dx}$ \\[1em]
+Orthogonality & $\Rightarrow$	& $\langle p,q \rangle = \int_a^b p(x)q(x) dx = 0$ \\[1em]
+\end{tabular}
+
+\newpage
+
+\section{Least Squares using Inner Products}
+
+\vspace{4mm}
+
+The least squares matrix equations from last week can be written in a generalised form using the inner product (known as the normal equations),
+
+\vspace{4mm}
+
+\begin{align*}
+\begin{bmatrix}
+	\langle f,p_1 \rangle \\[1ex]
+	\langle f,p_2 \rangle \\[1ex]
+	\vdots \\[1ex]
+	\langle f,p_n \rangle \\[1ex]
+\end{bmatrix} 
+&=
+\begin{bmatrix}
+  	\langle p_1,p_1 \rangle & \langle p_1,p_2 \rangle & \dots & \langle p_1,p_n \rangle \\[1ex]
+    \langle p_2,p_1 \rangle & \ddots & \ddots & \vdots \\[1ex]
+    \vdots & \ddots & \ddots & \vdots \\[1ex]
+    \langle p_n,p_1 \rangle & \dots & \dots & \langle p_n,p_n \rangle \\
+\end{bmatrix}
+\begin{bmatrix}
+	\alpha_1 \\[1ex]
+	\alpha_2 \\[1ex]
+	\vdots \\[1ex]
+	\alpha_n \\[1ex]
+\end{bmatrix} 
+ \\[2ex]
+\end{align*}
+
+The normal equations can now be used to approximate any function or vector, $f$, with a set of other functions or vectors, $p_i$, where the approximation is $y=\sum_{i=1}^{n} \alpha_i p_i$ (PBL \textit{Questions 1 \& 2}).
+
+\vspace{4mm}
+
+In other words, for the least squared problem, we are minimising $\|\mathbf{y}-\mathbf{f}\|^2$.
+
+\vspace{4mm}
+
+If the approximating functions or vectors are mutually orthogonal, the above matrix is diagonal.
+
+\subsection{Orthogonal Polynomials}
+
+\vspace{4mm}
+
+There exist sets of mutually orthogonal polynomials for which the normal equation matrix is diagonal. One such set is the shifted Legendre Polynomials,
+
+\begin{align*}
+P_0(x) &= 1 \\[0.5em]
+P_1(x) &= 2x - 1 \\[0.5em]
+P_2(x) &= 6x^2 - 6x + 1 \\[0.5em]
+P_3(x) &= 20x^3 - 30x^2 + 12x - 1 \\[0.5em]
+\end{align*}
+
+\end{document}

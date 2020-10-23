@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 7}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Numerical Solutions to PDEs
+	\begin{itemize}
+		\item[--] Explicit Schemes
+		\item[--] Implicit Schemes
+	\end{itemize}
+	\item Parabolic PDEs
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Assignment 1 (Due Friday)
+	\item Problem Sheet 7 (due before Week 8 PBL session)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+
+\section{Numerical Solutions to Parabolic PDEs}
+
+Recall the finite difference approximations we covered earlier in the course. Now we are using these to numerically solve PDES.
+
+\vspace{4mm}
+
+The first type of PDE we are looking at in lectures are parabolic PDEs, the standard form of which is the diffusion equation (written here in 1D),
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} = D \frac{\partial^2u}{\partial x^2}. $$
+	
+\vspace{4mm}	
+	
+The diffusion equation can be used to model heat conduction by rewriting the diffusion coefficient in terms of the conducting properties of the material, $D=\frac{k}{\rho C_p}$.
+
+\vspace{4mm}
+
+Now, to solve the diffusion equation using finite difference approximations, it is common to use a second order central difference for the spatial derivative,
+
+\vspace{2mm}
+
+$$ \frac{\partial^2u}{\partial x^2} \approx \frac{u_{j+1} - 2u_j + u_{j-1}}{(\Delta x)^2}, $$
+
+\vspace{4mm}
+	
+where $j$ represents the spatial nodes we have discretised our physical system into.
+
+\subsection{Forward Difference Scheme (Explicit)}
+
+The first way in which we can handle the solution of the time component of the PDE is with a forward difference,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} \approx \frac{u_j^{m+1} - u_j^m}{(\Delta t)}, $$
+
+\vspace{4mm}
+
+where $m$ represents the current time step of the discretised solution.
+
+\vspace{4mm}
+
+Now, substituting the above finite difference approximations for space and time into the original PDE, we obtain an {\it explicit} system of equations to be solved. This means that updated values  of the solution ($m+1$) can be written explicitly in terms of past values ($m$),
+
+$$ u_{j}^{m+1} \approx \sigma u_{j+1}^{m} + (1-2\sigma)u_{j}^{m} + \sigma u_{j-1}^{m} $$
+
+\vspace{4mm}
+
+where $\sigma = D\frac{\Delta t}{(\Delta x)^2}$. These equations can be written concisely in matrix form up to the number of spatial nodes $N$,
+
+\begin{align*}
+\begin{bmatrix}
+	u_0^{m+1} \\[1ex]
+	u_1^{m+1} \\[1ex]
+	\vdots \\[1ex]
+	\vdots \\[1ex]
+	\vdots \\[1ex]
+	u_N^{m+1}
+\end{bmatrix} 
+&=
+\begin{bmatrix}
+  	1 & 0 & 0 & \dots & \dots & 0 \\[1ex]
+    \sigma & 1-2\sigma & \sigma & \ddots & \ddots & \vdots  \\[1ex]
+    0 & \sigma & 1-2\sigma & \sigma & \ddots & \vdots \\[1ex]
+    \vdots & \ddots & \ddots & \ddots & \ddots & 0 \\[1ex]
+    \vdots & \ddots & \ddots & \sigma & 1-2\sigma & \sigma \\[1ex]
+    0 & \dots & \dots & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	u_0^{m} \\[1.2ex]
+	u_1^{m} \\[1.2ex]
+	\vdots \\[1.2ex]
+	\vdots \\[1.2ex]
+	\vdots \\[1.2ex]
+	u_N^{m}
+\end{bmatrix} 
+\end{align*}
+
+\vspace{4mm}
+
+This system of equations represents {\it Dirichlet} boundary conditions, where the actual value at the first and last spatial nodes ($j=0$, $j=N$) are specified. We will look at how Neumann boundaries are applied next week.
+
+
+\subsection{Backward Difference Scheme (Implicit)}
+
+We can also use a backward finite difference approximation for the time derivative,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} \approx \frac{u_j^{m} - u_j^{m-1}}{(\Delta t)}, $$
+
+\vspace{4mm}
+	
+rendering the update equation,
+
+$$ -\sigma u_{j-1}^{m+1} + (1+2\sigma)u_{j}^{m+1} - \sigma u_{j+1}^{m+1} \approx u_{j}^{m}. $$
+	
+\vspace{4mm}	
+	
+We say that this is {\it implicit}, because the solution at the current time step $m$ depends on the solution at the next time step $m+1$. We can again write this system of equations in matrix form,
+
+\begin{align*}
+\begin{bmatrix}
+  	1 & 0 & 0 & \dots & \dots & 0 \\[1ex]
+    -\sigma & 1+2\sigma & -\sigma & \ddots & \ddots & \vdots  \\[1ex]
+    0 & -\sigma & 1+2\sigma & -\sigma & \ddots & \vdots \\[1ex]
+    \vdots & \ddots & \ddots & \ddots & \ddots & 0 \\[1ex]
+    \vdots & \ddots & \ddots & -\sigma & 1+2\sigma & -\sigma \\[1ex]
+    0 & \dots & \dots & 0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+	u_0^{m+1} \\[1.1ex]
+	u_1^{m+1} \\[1.1ex]
+	\vdots \\[1.1ex]
+	\vdots \\[1.1ex]
+	\vdots \\[1.1ex]
+	u_N^{m+1}
+\end{bmatrix}
+&=
+\begin{bmatrix}
+	u_0^{m} \\[1.2ex]
+	u_1^{m} \\[1.2ex]
+	\vdots \\[1.2ex]
+	\vdots \\[1.2ex]
+	\vdots \\[1.2ex]
+	u_N^{m}
+\end{bmatrix} 
+\end{align*}
+
+\vspace{4mm}	
+
+this time inverting the matrix to solve for the updated values ($m+1$).
+
+
+\end{document}

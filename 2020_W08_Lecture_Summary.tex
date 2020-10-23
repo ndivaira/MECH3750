@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 8}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Hyperbolic PDEs
+	\begin{itemize}
+		\item[--] Wave equation
+	\end{itemize}
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 8 (due before Week 9 PBL session, after mid-sem break)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Hyperbolic PDEs}
+
+This week in lectures we looked at the 2nd type of PDEs, hyperbolic. Hyperbolic PDEs can be first order (the convection equation),
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = 0, $$
+
+\vspace{4mm}
+
+or 2nd order (the wave equation),
+
+\vspace{2mm}
+
+$$ \frac{\partial^2u}{\partial t^2} = c^2 \frac{\partial^2u}{\partial x^2}. $$
+
+\vspace{4mm}
+
+The wave equation is the standard form of hyperbolic PDEs. In PBL {\it Question 1} you should obtain this equation. For oscillations (of a vibrating string), the constant $c^2$ is replaced by $F/\rho A$ (PBL {\it Question 2}).
+
+\subsection{Numerical Solution to Wave Equation}
+
+So how do we solve the wave equation using finite differences? 2nd order central differences are typically used for both the temporal and spatial derivatives,
+
+\vspace{2mm}
+
+$$ \frac{u_{j}^{m-1} - 2u_j^m + u_{j}^{m+1}}{(\Delta t)^2}  = c^2\left(\frac{u_{j-1}^{m} - 2u_j^m + u_{j+1}^{m}}{(\Delta x)^2}\right), $$
+
+\vspace{4mm}
+
+However, it can be seen that this approximation depends on the previous time step ($m-1$), which is a problem at the first time step. To deal with this, we apply a three-point central difference approximation to the first derivative of the initial condition, $U_1(x)$, such that the update equation for the first time step uses $U_1(x)$,
+
+\vspace{2mm}
+
+$$u_j^1 = \frac{\sigma^2}{2}u_{j-1}^0 + (1-\sigma^2)u_j^0 + \frac{\sigma^2}{2}u_{j+1}^0 + \Delta tU_1(x),$$
+
+\vspace{4mm}
+
+recognising that the $u^0$ terms are simply the initial condition for displacement, $U_0(x)$. The general update equation for all subsequent steps is then,
+
+\vspace{2mm}
+
+$$u_j^{m+1} = \sigma^2 u_{j-1}^m + (2-2\sigma^2)u_j^m + \sigma^2 u_{j+1}^m - u_{j}^{m-1},$$
+
+\vspace{4mm}
+
+where $\sigma=c\frac{\Delta t}{\Delta x}$.
+
+\vspace{4mm}
+
+Similar to the diffusion equation last week, these update equations can be written in matrix form (refer to lecture notes).
+
+\subsection{Boundary conditions}
+
+To deal with boundaries in the wave equation, it is easiest to directly apply them at each time step. Common boundary conditions are fixed ends (Dirichlet),
+
+\vspace{2mm}
+
+$$u_0^{m+1} = u_0^m = 0 ; u_N^{m+1} = u_N^m = 0.$$
+
+\vspace{4mm}
+
+or specifying a zero-gradient (Neumann). By taking a 2nd order forward difference at the boundary nodes, the update for the zero-gradient condition can be obtained, 
+
+\vspace{2mm}
+
+$$u_0^{m+1} = \frac{4u_1^{m+1} - u_2^{m+1}}{3} ; u_{N-1}^{m+1} = \frac{4u_{N-2}^{m+1} - u_{N-2}^{N-3}}{3}. $$
+
+\vspace{4mm}
+
+Note, however, that both Dirichlet and Neumann boundaries can be non-zero and/or vary with time.
+
+\end{document}

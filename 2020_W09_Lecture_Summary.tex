@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{natbib}
+
+\setlength{\parindent}{0pt}
+\usepackage[margin=3cm]{geometry}
+
+%\renewcommand{\myvecf}{\underline{\mathbf{f}}}
+\newcommand{\myvec}[1]{\underline{\mathbf{#1}}}
+
+%\begin{document}
+%\documentclass{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath}
+
+%\title{FEM Example}
+%\author{apr }
+%\date{May 2018}
+
+%\usepackage{graphicx}
+
+
+\setlength{\parindent}{0mm}% Removes the indents.
+\begin{document}
+
+\begin{center}
+{\Huge   MECH3750 PBL Content Summary}
+
+\vspace{6mm}
+
+{\Huge  Week 9}
+
+\end{center}
+
+\vspace{6mm}
+
+{\Large Content:}
+{\begin{itemize}
+	\item Convection equation
+	\begin{itemize}
+		\item[--] Stability
+		\item[--] Numerical diffusion
+	\end{itemize}
+	\item Convection-diffusion equation
+	\begin{itemize}
+		\item[--] Robin boundaries
+	\end{itemize}
+\end{itemize}}
+
+\vspace{4mm}
+
+{\Large Upcoming assessment:}
+{\begin{itemize}
+	\item Problem Sheet 9 (due before Week 10 PBL session)
+	\item Assignment II (Due Fri. Week 11)
+\end{itemize}}
+
+\vspace{4mm}
+
+{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+%{Tutors: Nathan Di Vaira, Alex Muirhead, William Snell, Tristan Samson, Nicholas Maurer, Jakob Ivanhoe, Robert Watt}
+
+\pagebreak
+
+\section{Convection Equation}
+
+This week we moved on from 2nd order hyperbolic PDEs (wave equation) to numerically solving 1st order hyperbolic PDEs (convection equation),
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = 0. $$
+
+\vspace{4mm}
+
+The key consideration when numerically solving the convection equation is the direction of the convection, $v$. Specifically, we saw that {\it only} upwind schemes are stable. For $v>0$, this means taking a backward finite difference for the spatial derivative, i.e., in the direction opposite to (upwind of) the flow,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} \approx \frac{u_j^{m+1}-u_j^m}{\Delta t} \hspace{2em}\frac{\partial u}{\partial x} \approx \frac{u_j^{m}-u_{j-1}^m}{\Delta x}.$$
+
+\vspace{4mm}
+
+Like other PDEs, the temporal derivative of the convection equation can be solved explicitly, implicitly or with mixed differences. The Courant-Friedrichs-Levy (CFL) number,
+
+\vspace{2mm}
+
+$$ \sigma = v \frac{\Delta t}{\Delta x}, $$
+
+\vspace{4mm}
+
+is the key determining factor of stability. Depending on the combination of spatial and temporal schemes used, the solution will have different stability characteristics. These are summarised at the end of the {\it W09L2} lecture notes. Regardless, downwind schemes are {\it always} unstable.
+
+
+\subsection{Numerical Diffusion}
+
+If a Taylor series is substituted into the upwind finite difference approximation and rearranged, we obtain,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = D_{num}\frac{\partial^2 u}{\partial x^2} + H.O.T,$$
+
+\vspace{4mm}
+
+where
+
+\vspace{2mm}
+
+$$ D_{num} = v \frac{\Delta x}{2}. $$
+
+\vspace{4mm}
+
+This means that the truncation error due to our finite difference approximation can be thought of as an extra {\it numerical} diffusion source term. Importantly, $D_{num}$ decreases with decreasing $\Delta x$.
+
+
+\section{Convection-Diffusion Equation}
+
+A number of physical scenarios ({\it hint:} Assignment II) must consider a combination of convection and diffusion,
+
+\vspace{2mm}
+
+$$ \frac{\partial u}{\partial t} + v \frac{\partial u}{\partial x} = D\frac{\partial^2 u}{\partial x^2}. $$
+
+\vspace{4mm}
+
+To determine the overall stability and convergence characteristics, the finite difference schemes used for the convection and diffusion parts must considered separately.
+
+\subsection{Robin Boundaries}
+
+The Robin boundary condition represents a general way of prescribing an insulating boundary for a convection-diffusion problem. The Dirichlet and Neumann conditions are combined to define the flux at the boundary, which is set to zero,
+
+\vspace{2mm}
+
+$$ vu - D\frac{\partial u}{\partial x} = 0. $$
+
+\vspace{4mm}
+
+Numerically, a first order approximation to the Robin boundary condition in one dimension is,
+
+\vspace{2mm}
+
+$$ u_0^m = u_1^m\left(1-\frac{v\Delta x}{D}\right), $$
+
+\vspace{4mm}
+
+where $u_0^m$ and $u_1^m$ represent the last and 2nd-last nodes, respectively.
+
+\end{document}
