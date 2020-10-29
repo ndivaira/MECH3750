@@ -92,23 +92,32 @@ To solve elliptic PDEs numerically, we take a centred finite difference approxim
 
 \vspace{2mm}
 
-$$ \frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{(\Delta x)^2} + \frac{u_{i,j-1} - 2u_{i,j} + u_{i,j+1}}{(\Delta y)^2} = 0,$$
+$$ \frac{u_{i-1,j} - 2u_{i,j} + u_{i+1,j}}{(\Delta x)^2} + \frac{u_{i,j-1} - 2u_{i,j} + u_{i,j+1}}{(\Delta y)^2} = 0.$$
 
 \vspace{4mm}
 
-which now deals with two discrete dimensions, $i$ and $j$. This can be rearrange to give the general update equation for inner nodes,
+which now deals with two discrete dimensions, $i$ and $j$. Note that, while the solution nodes are in two-dimensions, the solution vector must be assembled as a single-ordinate vector. For a soluton with $m\times n$ spatial nodes, we introduce a single-ordinate counter,
 
 \vspace{2mm}
 
-$$ u_{i,j} = \frac{(\Delta y)^2 (u_{i-1,j}+u_{i+1,j}) + (\Delta x)^2 (u_{i,j-1}+u_{i,j+1})}{2((\Delta x)^2 + (\Delta y)^2)}. $$
+$$ p=i+jm.$$
 
 \vspace{4mm}
 
-While the solution nodes are in two-dimensions, the solution vector must be assembled as a single-ordinate vector. The rows of the matrix are assembled by moving along each row of nodes. Detailed examples with code were given in the lecture for how to efficiently handle this.
+The solution matrix would therefore have dimensions $(m\times n,m\times n)$ -- a single row of the solution matrix is assembled by moving along each row of spatial nodes. The example python script attached to the {\it W11L03} lecture performs this matrix construction and solution. Due to the large size of the solution matrix, iterative methods, such as Gauss-Seidel, may be required to solve...
 
 \vspace{4mm}
 
-Due to the large size of the solution matrix, iterative methods, such as Gauss-Seidel, may be required to solve...
+An alternative solution method is to rearrange to give the general update equation for inner nodes,
+
+\vspace{2mm}
+
+$$ u_{i,j} = \frac{(\Delta y)^2 (u_{i-1,j}+u_{i+1,j}) + (\Delta x)^2 (u_{i,j-1}+u_{i,j+1})}{2((\Delta x)^2 + (\Delta y)^2)}, $$
+
+\vspace{4mm}
+
+start will an initial guess for all nodes $i,j$, and iteratively step through each node $i,j$ to find an updated value until the solution change between steps in adequately small.
+
 
 \subsection{Application to Grid Generation}
 
@@ -116,7 +125,7 @@ It turns out that elliptic PDEs are particularly useful for handling complex com
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.55]{figures/grid_generation_elliptic.png}
+\includegraphics[scale=0.55]{grid_generation_elliptic.png}
 \end{figure}
 
 The edge points in the $x$-$y$ domain become the boundary conditions in the $u$-$v$ domain, and we then solve for $x$ and $y$ using two different eliptic equations, 
